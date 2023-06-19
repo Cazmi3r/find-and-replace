@@ -15,7 +15,7 @@ class ReplaceFrame(customtkinter.CTkFrame):
             label = customtkinter.CTkLabel(self, text=value)
             label.grid(row=i, column=0, padx=10, pady=(10, 0), sticky="n")
 
-            entry = customtkinter.CTkEntry(self)
+            entry = customtkinter.CTkEntry(self, width=250)
             entry.grid(row=i, column=1, padx=10, pady=(10, 0), sticky="n")
             
             self.text_box_arry.append((label, entry))
