@@ -45,7 +45,9 @@ class App(customtkinter.CTk):
         self.template_folder = self.home_folder / "template"
         self.template_folder.mkdir(parents=True, exist_ok=True)
 
-        self.config_files = self.get_config_files()
+        self.config_files = []
+        self.set_config_files()
+
         self.current_config = {}
         self.values_to_replace = {}
         self.values_to_replace_frame = None
@@ -99,11 +101,10 @@ class App(customtkinter.CTk):
         self.values_to_replace_frame.grid(row=2, column=0, padx=10, pady=1, sticky="ewn")
 
     #TODO abstract out 'self.config_folder'
-    def get_config_files(self):
-        output = []
+    def set_config_files(self):
         for file in list(self.config_folder.glob("*.toml")):
-            output.append(file.stem)
-        return output
+            self.config_files.append(file.stem)
+        
     
     def set_current_config(self):
         file = Path(self.config_optionmenu.get() + ".toml")
