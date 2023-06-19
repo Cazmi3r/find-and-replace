@@ -1,9 +1,11 @@
 import customtkinter   
+from tkinter import END
 import util
 from pathlib import Path
 # next step is to get this to generate a label and a corrosponding text field that matched each of the "values to replace" in the selected config file.
 # then I'll need to load all of that into a dic to pass to a find and replace algo. 
 # I should also make it so the template and output files are specified in the config file.
+# need to extract the data into a dict
 class ReplaceFrame(customtkinter.CTkFrame):
     def __init__(self, master, values):
         super().__init__(master)
@@ -11,12 +13,25 @@ class ReplaceFrame(customtkinter.CTkFrame):
         self.values = values
 
         for i, value in enumerate(self.values):
+
             label = customtkinter.CTkLabel(self, text=value)
             label.grid(row=i, column=0, padx=10, pady=(10, 0), sticky="n")
-            self.text_box_arry.append(label)
+
+            textbox = customtkinter.CTkTextbox(self)
+            textbox.grid(row=i, column=1, padx=10, pady=(10, 0), sticky="n")
+            
+            self.text_box_arry.append((label, textbox))
     
     def get(self) -> dict:
-        pass
+        output = {}
+        for touple in self.text_box_arry:
+            replace_key = touple[0].cget("text")
+
+            replace_value = touple[1].get("1.0",END)
+            replace_value = replace_value.strip()
+
+            output[replace_key] = replace_value
+        print(output)
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -24,8 +39,10 @@ class App(customtkinter.CTk):
 
         self.home_folder = Path.home() / "find_and_replace"
         self.home_folder.mkdir(parents=True, exist_ok=True)
+
         self.config_folder = self.home_folder / "config"
         self.config_folder.mkdir(parents=True, exist_ok=True)
+
         self.config_files = self.get_config_files()
         self.file_path = ""
         self.output_path = ""
@@ -51,7 +68,8 @@ class App(customtkinter.CTk):
     
         
     def submit_button_callback(self):
-        pass
+        print(self.values_to_replace)
+        self.values_to_replace_frame.get()
 
     def optionmenu_callback(self, choice):
         if self.values_to_replace_frame is not None:
@@ -60,7 +78,7 @@ class App(customtkinter.CTk):
         self.values_to_replace_frame = ReplaceFrame(self, values=self.values_to_replace)
         self.values_to_replace_frame.grid(row=2, column=0, padx=10, pady=1, sticky="ewn")
 
-
+    #TODO abstract out 'self.config_folder'
     def get_config_files(self):
         output = []
         for file in list(self.config_folder.glob("*.toml")):
