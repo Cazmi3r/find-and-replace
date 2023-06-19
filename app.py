@@ -58,7 +58,7 @@ class App(customtkinter.CTk):
         self.grid_columnconfigure(1, weight=1)
 
 
-        self.label = customtkinter.CTkLabel(self, text="Please select a Config!", fg_color="transparent")
+        self.label = customtkinter.CTkLabel(self, text="Please select a config and fill out your varibles", fg_color="transparent")
         self.label.grid(row=0, column=0, padx=10, pady=10, sticky="ewn", columnspan=2)
         
         self.config_optionmenu = customtkinter.CTkOptionMenu(self, values=self.config_files, command=self.optionmenu_callback)
