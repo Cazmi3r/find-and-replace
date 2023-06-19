@@ -42,12 +42,17 @@ class App(customtkinter.CTk):
         self.config_folder = self.home_folder / "config"
         self.config_folder.mkdir(parents=True, exist_ok=True)
 
+        self.template_folder = self.home_folder / "template"
+        self.template_folder.mkdir(parents=True, exist_ok=True)
+
         self.config_files = self.get_config_files()
         self.current_config = {}
         self.file_path = ""
         self.output_path = ""
         self.values_to_replace = {}
         self.values_to_replace_frame = None
+        self.template_files = []
+        
 
         self.title("Find and Replace")
         #self.geometry("400x500")
@@ -65,7 +70,23 @@ class App(customtkinter.CTk):
         self.submit_button.grid(row=3, column=0, padx=10, pady=10, sticky="ews", columnspan=2)
 
         self.optionmenu_callback(self.config_optionmenu.get())
-        self.set_output_path_from_config()
+
+    def generate_output_files(self):
+        for template in self.template_files:
+            input_file = self.template_folder / template
+            input_string = util.read_str_from_file(input_file)
+            output_string = util.replace_all(input_string, self.values_to_replace)
+            output_file = self.output_path / template
+            print(f"-----output path-----\n{self.output_path}")
+            print(f"-----output_file-----\n{output_file}")
+            util.create_empty_file(output_file)
+            util.write_string_to_file(output_file, output_string)
+
+
+    def get_template_files(self):
+        # figure out how to get a list of files from the template folder with the templates in the toml
+        self.template_files = self.current_config["templates"]
+        print(f"-----Template Files-----\n{self.template_files}")
     
     def set_output_path_from_config(self):
         self.output_path = Path(self.current_config["output_path"])
@@ -74,11 +95,16 @@ class App(customtkinter.CTk):
     def submit_button_callback(self):
         self.values_to_replace = self.values_to_replace_frame.get()
         print(f"-----Values to Replace------\n{self.values_to_replace}")
+        self.generate_output_files()
 
     def optionmenu_callback(self, choice):
         if self.values_to_replace_frame is not None:
             self.values_to_replace_frame.grid_forget()
+
+        self.set_current_config()
         self.init_values_to_replace()
+        self.set_output_path_from_config()
+        self.get_template_files()
         self.values_to_replace_frame = ReplaceFrame(self, values=self.values_to_replace)
         self.values_to_replace_frame.grid(row=2, column=0, padx=10, pady=1, sticky="ewn")
 
