@@ -2,10 +2,8 @@ import customtkinter
 from tkinter import END
 import util
 from pathlib import Path
-# next step is to get this to generate a label and a corrosponding text field that matched each of the "values to replace" in the selected config file.
-# then I'll need to load all of that into a dic to pass to a find and replace algo. 
-# I should also make it so the template and output files are specified in the config file.
-# need to extract the data into a dict
+
+#TODO I should also make it so the template and output files are specified in the config file.
 class ReplaceFrame(customtkinter.CTkFrame):
     def __init__(self, master, values):
         super().__init__(master)
