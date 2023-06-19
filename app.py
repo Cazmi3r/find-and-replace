@@ -17,17 +17,17 @@ class ReplaceFrame(customtkinter.CTkFrame):
             label = customtkinter.CTkLabel(self, text=value)
             label.grid(row=i, column=0, padx=10, pady=(10, 0), sticky="n")
 
-            textbox = customtkinter.CTkTextbox(self)
-            textbox.grid(row=i, column=1, padx=10, pady=(10, 0), sticky="n")
+            entry = customtkinter.CTkEntry(self)
+            entry.grid(row=i, column=1, padx=10, pady=(10, 0), sticky="n")
             
-            self.text_box_arry.append((label, textbox))
+            self.text_box_arry.append((label, entry))
     
     def get(self) -> dict:
         output = {}
         for touple in self.text_box_arry:
             replace_key = touple[0].cget("text")
 
-            replace_value = touple[1].get("1.0",END)
+            replace_value = touple[1].get()
             replace_value = replace_value.strip()
 
             output[replace_key] = replace_value
