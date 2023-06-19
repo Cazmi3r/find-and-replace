@@ -30,7 +30,7 @@ class ReplaceFrame(customtkinter.CTkFrame):
             replace_value = replace_value.strip()
 
             output[replace_key] = replace_value
-        print(output)
+        return output
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -43,6 +43,7 @@ class App(customtkinter.CTk):
         self.config_folder.mkdir(parents=True, exist_ok=True)
 
         self.config_files = self.get_config_files()
+        self.current_config = {}
         self.file_path = ""
         self.output_path = ""
         self.values_to_replace = {}
@@ -64,11 +65,15 @@ class App(customtkinter.CTk):
         self.submit_button.grid(row=3, column=0, padx=10, pady=10, sticky="ews", columnspan=2)
 
         self.optionmenu_callback(self.config_optionmenu.get())
+        self.set_output_path_from_config()
     
-        
+    def set_output_path_from_config(self):
+        self.output_path = Path(self.current_config["output_path"])
+        print(f"-----Output Path-----\n{self.output_path}")
+
     def submit_button_callback(self):
         self.values_to_replace = self.values_to_replace_frame.get()
-        print(self.values_to_replace)
+        print(f"-----Values to Replace------\n{self.values_to_replace}")
 
     def optionmenu_callback(self, choice):
         if self.values_to_replace_frame is not None:
@@ -84,15 +89,14 @@ class App(customtkinter.CTk):
             output.append(file.stem)
         return output
     
-    def get_current_config(self) -> dict:
+    def set_current_config(self):
         file = Path(self.config_optionmenu.get() + ".toml")
-        config = util.load_config(self.config_folder / file)
-        return config
+        self.current_config = util.load_config(self.config_folder / file)
     
     def init_values_to_replace(self):
         self.values_to_replace = {}
-        config = self.get_current_config()
-        for value in config["values_to_replace"]:
+        self.set_current_config()
+        for value in self.current_config["values_to_replace"]:
             self.values_to_replace[value] = ""        
 
 app = App()
