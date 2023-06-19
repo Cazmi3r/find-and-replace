@@ -23,7 +23,8 @@ class ReplaceFrame(customtkinter.CTkFrame):
     def get(self) -> dict:
         output = {}
         for touple in self.text_box_arry:
-            replace_key = touple[0].cget("text")
+            # Puts curly braces around the key so it can be found in template
+            replace_key = f'\u007b{touple[0].cget("text")}\u007d'
 
             replace_value = touple[1].get()
             replace_value = replace_value.strip()
@@ -66,8 +67,8 @@ class App(customtkinter.CTk):
     
         
     def submit_button_callback(self):
+        self.values_to_replace = self.values_to_replace_frame.get()
         print(self.values_to_replace)
-        self.values_to_replace_frame.get()
 
     def optionmenu_callback(self, choice):
         if self.values_to_replace_frame is not None:
