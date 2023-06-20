@@ -100,7 +100,6 @@ class App(customtkinter.CTk):
         self.values_to_replace_frame = ReplaceFrame(self, values=self.values_to_replace)
         self.values_to_replace_frame.grid(row=2, column=0, padx=10, pady=1, sticky="ewn")
 
-    #TODO abstract out 'self.config_folder'
     def set_config_files(self):
         for file in list(self.config_folder.glob("*.toml")):
             self.config_files.append(file.stem)
