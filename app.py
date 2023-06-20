@@ -53,12 +53,10 @@ class App(customtkinter.CTk):
         self.values_to_replace_frame = None
         self.template_files = []
         
-
         self.title("Find and Replace")
         #self.geometry("400x500")
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
-
 
         self.label = customtkinter.CTkLabel(self, text="Please select a config and fill out your varibles", fg_color="transparent")
         self.label.grid(row=0, column=0, padx=10, pady=10, sticky="ewn", columnspan=2)
@@ -79,7 +77,6 @@ class App(customtkinter.CTk):
             output_string = util.replace_all(input_string, self.values_to_replace)
             util.create_empty_file(output_file)
             util.write_string_to_file(output_file, output_string)
-
 
     def get_template_files(self):
         self.template_files = self.current_config["templates"]
@@ -104,7 +101,6 @@ class App(customtkinter.CTk):
         for file in list(self.config_folder.glob("*.toml")):
             self.config_files.append(file.stem)
         
-    
     def set_current_config(self):
         file = Path(self.config_optionmenu.get() + ".toml")
         self.current_config = util.load_config(self.config_folder / file)
