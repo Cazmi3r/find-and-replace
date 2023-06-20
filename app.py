@@ -72,7 +72,7 @@ class App(customtkinter.CTk):
     def generate_output_files(self):
         for template in self.template_files:
             output_file = Path(template)
-            input_file = self.template_folder / output_file.name
+            input_file = self.template_folder / self.get_current_Config_name() /output_file.name
             input_string = util.read_str_from_file(input_file)
             output_string = util.replace_all(input_string, self.values_to_replace)
             util.create_empty_file(output_file)
