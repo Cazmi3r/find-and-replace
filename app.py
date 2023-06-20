@@ -3,7 +3,6 @@ from tkinter import END
 import util
 from pathlib import Path
 
-#TODO I should also make it so the template and output files are specified in the config file.
 class ReplaceFrame(customtkinter.CTkFrame):
     def __init__(self, master, values):
         super().__init__(master)
@@ -54,7 +53,6 @@ class App(customtkinter.CTk):
         self.template_files = []
         
         self.title("Find and Replace")
-        #self.geometry("400x500")
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
