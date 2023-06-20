@@ -105,6 +105,9 @@ class App(customtkinter.CTk):
         file = Path(self.config_optionmenu.get() + ".toml")
         self.current_config = util.load_config(self.config_folder / file)
     
+    def get_current_Config_name(self):
+        return self.config_optionmenu.get()
+    
     def init_values_to_replace(self):
         self.values_to_replace = {}
         self.set_current_config()
